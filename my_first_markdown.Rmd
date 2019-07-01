@@ -10,10 +10,11 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 Download sleep study data
-```{r}
+```{r, echo=FALSE}
 library(readr)
 sleep <- read_csv(
-  "https://vincentarelbundock.github.io/Rdatasets/csv/lme4/sleepstudy.csv")
+  "https://vincentarelbundock.github.io/Rdatasets/csv/lme4/sleepstudy.csv"
+)
 head(sleep)
 ```
 
@@ -24,26 +25,28 @@ ggplot(sleep, aes(x = Days, y = Reaction)) +
   geom_point() +
   geom_smooth() +
   scale_x_continuous(breaks = seq(0, 8, by = 2)) +
-  facet_wrap(~ Subject)
+  facet_wrap(~Subject)
 ```
 
 Summary statsitics by subject
 
 ```{r}
 library(dplyr)
-sleep %>% 
-  group_by(Subject) %>% 
+sleep %>%
+  group_by(Subject) %>%
   summarize(mean(Reaction))
 ```
 
 Mean-center reaction times and plot on a single axis
 
 ```{r}
-sleep %>% 
-  group_by(Subject) %>% 
-  mutate(mean_centered_reaction = Reaction - mean(Reaction)) %>% 
-  ggplot(aes(x = Days, y = mean_centered_reaction,
-             color = factor(Subject))) +
+sleep %>%
+  group_by(Subject) %>%
+  mutate(mean_centered_reaction = Reaction - mean(Reaction)) %>%
+  ggplot(aes(
+    x = Days, y = mean_centered_reaction,
+    color = factor(Subject)
+  )) +
   geom_smooth(show.legend = FALSE, se = FALSE) +
   scale_x_continuous(breaks = seq(0, 8, by = 2))
 ``` 
